@@ -16,7 +16,7 @@ public class Server {
 	public static void main(String[] args) throws IOException {
 		// TCP 소켓 프로그래밍 - 서버 소켓
 		ServerSocket serverSocket = new ServerSocket();
-		serverSocket.bind(new InetSocketAddress("192.168.0.55", 10001)); // (ip주소, port)
+		serverSocket.bind(new InetSocketAddress("127.0.0.1", 8080)); // (ip주소, port)
 		
 		System.out.println("<서버 시작>");
 		System.out.println("============================================================");
