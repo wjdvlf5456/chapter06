@@ -14,55 +14,62 @@ import java.util.Scanner;
 public class Client {
 
 	public static void main(String[] args) throws IOException {
-
-		Socket socket = new Socket();
-
-		System.out.println("<클라이언트 시작>");
-		System.out.println("==========================================");
-
-		System.out.println("[서버에 연결을 요청합니다.]");
-		socket.connect(new InetSocketAddress("127.0.0.1", 8080));
 		
-
+		Socket socket = new Socket();
+		
+		System.out.println("<클라이언트 시작>");
+		System.out.println("============================");
+		
+		System.out.println("[서버에 연결을 요청합니다]");
+		socket.connect(new InetSocketAddress("192.168.0.55", 10001));
+		
 		System.out.println("[서버에 연결 되었습니다.]");
-
+		
 		// 메세지 보내기용 스트림
-		OutputStream os = socket.getOutputStream();
+		OutputStream os = socket.getOutputStream();	// new 불필요, 알아서 세팅되어있음
 		OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
 		BufferedWriter bw = new BufferedWriter(osw);
-
+		
 		// 메세지 받기용 스트림
 		InputStream is = socket.getInputStream();
 		InputStreamReader isr = new InputStreamReader(is, "UTF-8");
 		BufferedReader br = new BufferedReader(isr);
-
+		
+		
 		// 스캐너
 		Scanner sc = new Scanner(System.in);
-
-		while (true) {
-			// 키보드입력
+		
+		// 반복문 적용
+		while(true) {
+			// 키보드 입력값
 			String str = sc.nextLine();
-
-			if (str.equals("/q")) {
+			
+			if(str.equals("/q")) {
 				break;
 			}
+			
 			// 메세지 보내기
 			bw.write(str);
+			// 현재 정보량이 매우 적어 전송이 되지 않음(손님을 더 기다리는 중)
 			bw.newLine();
-			bw.flush();
-
+			bw.flush();	// 강제 송출
+			
 			// 메세지 받기
 			String reMsg = br.readLine();
-			System.out.println("server:[" + reMsg + "]");
+			System.out.println("server: [" + reMsg + "]");
+			
 		}
-
-		System.out.println("=======================================");
+		
+		System.out.println("=============================");
 		System.out.println("<클라이언트 종료>");
-
+		
 		sc.close();
+		br.close();
 		bw.close();
 		socket.close();
-
+		
+		
+		
 	}
 
 }
