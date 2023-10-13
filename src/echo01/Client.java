@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client {
 
@@ -21,7 +20,7 @@ public class Client {
 		System.out.println("==========================================");
 
 		System.out.println("[서버에 연결을 요청합니다.]");
-		socket.connect(new InetSocketAddress("192.168.0.55", 80));
+		socket.connect(new InetSocketAddress("127.0.0.1", 10001));
 
 		System.out.println("[서버에 연결 되었습니다.]");
 
@@ -36,11 +35,16 @@ public class Client {
 		BufferedReader br = new BufferedReader(isr);
 
 		// 스캐너
-		Scanner sc = new Scanner(System.in);
+		// Scanner sc = new Scanner(System.in);
+		InputStream in = System.in;
+		InputStreamReader sisr = new InputStreamReader(in, "UTF-8");
+		BufferedReader sbr = new BufferedReader(sisr);
 
 		while (true) {
 			// 키보드입력
-			String str = sc.nextLine();
+			// String str = sc.nextLine();
+
+			String str = sbr.readLine();
 
 			if (str.equals("/q")) {
 				break;
@@ -56,9 +60,15 @@ public class Client {
 		}
 
 		System.out.println("=======================================");
-		System.out.println("<클라이언트 종료>");
+		// System.out.println("<클라이언트 종료>");
+		OutputStream out = System.out;
+		OutputStreamWriter posw = new OutputStreamWriter(out, "UTF-8");
+		BufferedWriter pbw = new BufferedWriter(posw);
+		pbw.write("클라이언트 종료");
+		pbw.newLine();
+		pbw.flush();
 
-		sc.close();
+		br.close();
 		bw.close();
 		socket.close();
 
